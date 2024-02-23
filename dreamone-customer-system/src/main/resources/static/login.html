@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+
+<head>
+    <title>Dream One</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="pragma" content="no-cache" />
+    <link rel="shortcut icon" href="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/favicon.ico" type="image/x-icon" />
+    <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/a/font_4151968_zm3z1ijgrfb.css" />
+    <link rel="stylesheet" href="//dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/bootstrap.min.4_3_1.css">
+    <style type="text/css">
+        body {
+            padding-top: 40px;
+            padding-bottom: 40px;
+            background-color: #eee;
+        }
+        .form-signin {
+            max-width: 300px;
+            padding: 15px;
+            margin: 0 auto;
+        }
+        .login-btn {
+            width: 270px;
+            display: block;
+            margin: 0 auto;
+        }
+        #titleContainer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+    <script type="text/javascript" src="//dream-web.oss-cn-hangzhou.aliyuncs.com/static/jslib/jquery.min.js"></script>
+    <script>
+        // login.html如果在iframe里面，发消息给外层页面，把外层页面设置成login.html
+        // if (self !== top) {
+        //     var message = {};
+        //     message.destination = "login";
+        //     window.parent.postMessage(message, "*");
+        // }
+    </script>
+</head>
+
+<body>
+<div class="container">
+    <div align="center">
+        <!--             <span class="fs-4"><i class="iconfont icon-rocket-vertical " style="font-size: 2rem;color: rgb(4, 152, 70);"></i>&nbsp;&nbsp;Dream-->
+        <!--        One</span>-->
+        <!--            style="font-size: 2rem; color: rgb(4, 152, 70); width: 2.5rem;"-->
+
+        <div class="container" id="titleContainer"><i class="iconfont icon-rocket-vertical" style="font-size: 3rem;"></i><h1>&nbsp;&nbsp;Dream One</h1></div>
+        <hr>
+    </div>
+
+    <form class="form-signin" id="loginForm" action="/login.html" method='POST'>
+        <input type="text" name="username" id="usernameInput" class="form-control" placeholder="用户名" required autofocus><br />
+        <input type="password" name="password" id="passwordInput" class="form-control" placeholder="密码" required><br />
+        <input type="checkbox" name="remember-me" checked="true" /><span>&nbsp;&nbsp;remember me</span><br /><br />
+        <input type="submit" class="btn btn-primary login-btn" value="Sign in" />
+        <br /><br />
+    </form>
+    <div align="center" style="color: dimgrey">
+        <p>© dream cmp</p>
+    </div>
+</div>
+<div style="position: fixed;bottom: 0;width: 100%;text-align: center;">
+    <a href="https://beian.miit.gov.cn" style="font-size: smaller;color: darkgray;">浙ICP备13011440号-6</a>
+</div>
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dreamone-order-system-deployment
+  labels:
+    run: dreamone-order-system
+    name: dreamone-order-system
+spec:
+  imagePullSecrets:
+    - name: acr-credential-dreamone-order-system
+  replicas: 1
+  selector:
+    matchLabels:
+      run: dreamone-order-system
+  template:
+    metadata:
+      labels:
+        run: dreamone-order-system
+        armsPilotAutoEnable: "on"
+        armsPilotCreateAppName: "dreamone-order-system"
+    spec:
+      containers:
+      - image: ${IMAGE}
+        name: app
+        env:
+          - name: CUSTOMER_SYSTEM_URL
+            value: "http://dreamone-customer-system.dreamone-customer-system.svc.cluster.local:80" # service
+          - name: CUSTOMER_SYSTEM_INGRESS_URL
+            valueFrom:
+              secretKeyRef:
+                key: CUSTOMER_SYSTEM_INGRESS_URL
+                name: dreamone-business-system-credentials
+#            value: "http://www.dreamone-customer-system" # slb
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_URL
+                name: dreamone-business-system-credentials
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_USERNAME
+                name: dreamone-business-system-credentials
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_PASSWORD
+                name: dreamone-business-system-credentials
+          - name: DREAMONE_LOGIN_USER
+            valueFrom:
+              secretKeyRef:
+                key: DREAMONE_LOGIN_USER
+                name: dreamone-business-system-credentials

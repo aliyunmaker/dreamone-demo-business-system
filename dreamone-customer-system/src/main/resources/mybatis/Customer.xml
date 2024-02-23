@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="org.example.dao.CustomerDao">
+    <select id="listCustomers"
+            resultType="org.example.model.Customer">
+        SELECT * FROM customer LIMIT 10;
+    </select>
+
+    <insert id="insertCustomers"
+            parameterType="org.example.model.Customer"
+            useGeneratedKeys="true" keyProperty="custKey">
+        insert into customer(
+        name, address, nation_key, phone,
+        acct_bal, mkt_segment, comment
+        )values
+        <foreach collection="customers" item="customer" separator=",">
+        (#{customer.name}, #{customer.address}, #{customer.nationKey}, #{customer.phone},
+        #{customer.acctBal}, #{customer.mktSegment}, #{customer.comment})
+        </foreach>
+
+    </insert>
+
+    <select id="listAllCustomers"
+            resultType="org.example.model.Customer">
+        SELECT * FROM customer LIMIT 100000;
+    </select>
+
+    <select id="getCustomer"
+            resultType="org.example.model.Customer">
+        SELECT * FROM customer
+        <where>
+            <if test="custKey != null">
+                and cust_key = #{custKey}
+            </if>
+        </where>
+    </select>
+</mapper>

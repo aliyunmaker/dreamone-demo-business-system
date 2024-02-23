@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dreamone-business-system-deployment
+  labels:
+    run: dreamone-business-system
+    name: dreamone-business-system
+spec:
+  imagePullSecrets:
+    - name: acr-credential-dreamone
+  replicas: 2
+  selector:
+    matchLabels:
+      run: dreamone-business-system
+  template:
+    metadata:
+      labels:
+        run: dreamone-business-system
+    spec:
+      containers:
+      - image: ${IMAGE}
+        name: app
+        env:
+          - name: SPRING_DATASOURCE_URL
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_URL
+                name: dreamone-business-system-credentials
+          - name: SPRING_DATASOURCE_USERNAME
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_USERNAME
+                name: dreamone-business-system-credentials
+          - name: SPRING_DATASOURCE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                key: SPRING_DATASOURCE_PASSWORD
+                name: dreamone-business-system-credentials
+          - name: DREAMONE_LOGIN_USER
+            valueFrom:
+              secretKeyRef:
+                key: DREAMONE_LOGIN_USER
+                name: dreamone-business-system-credentials
