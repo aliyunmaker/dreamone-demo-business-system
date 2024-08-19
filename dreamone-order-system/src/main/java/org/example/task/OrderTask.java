@@ -27,6 +27,8 @@ import org.example.model.Customer;
 import org.example.model.Order;
 import org.example.service.OrderService;
 import org.example.utils.HttpClientUtils;
+import org.example.utils.RequestUtils;
+import org.example.utils.TpchDataGenerator;
 import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,17 +52,17 @@ public class OrderTask {
     @Autowired
     OrderService orderService;
 
-    private final Queue<Long> taskQueue;
+    public final Queue<Long> taskQueue;
 
-    private final Gauge taskQueueGauge;
+    public final Gauge taskQueueGauge;
 
-    private final Counter requestCounter;
+    public final Counter requestCounter;
 
-    private final Counter dispatchCounter;
+    public final Counter dispatchCounter;
 
-    private final DistributionSummary requestTimeSummary;
+    public final DistributionSummary requestTimeSummary;
 
-    private final Timer requestTimeHistogram;
+    public final Timer requestTimeHistogram;
 
     public OrderTask(MeterRegistry registry) {
         taskQueue = new ArrayDeque<>();
@@ -87,6 +89,23 @@ public class OrderTask {
             .description("Percentiles of request time")
             .publishPercentiles(0.5, 0.95, 0.99)
             .register(registry);
+    }
+
+    public ErrorInfo createOrder(Long custKey) {
+        ErrorInfo errorInfo = RequestUtils.getErrorInfo();
+        Double price = null;
+        String type = null;
+        if (errorInfo.getHttpStatusCode() == 200) {
+            Order order = orderService.createOrderByCustKey(custKey);
+            taskQueue.offer(order.getOrderKey());
+            price = order.getTotalPrice();
+            type = order.getComment();
+        }
+        log.info(String.format(
+            "%s|%s|%s|%s|%s|%s|%s|%s",
+            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+            "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type));
+        return errorInfo;
     }
 
     /**
