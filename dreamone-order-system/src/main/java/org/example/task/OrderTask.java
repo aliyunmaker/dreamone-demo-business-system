@@ -91,15 +91,13 @@ public class OrderTask {
             .register(registry);
     }
 
-    public ErrorInfo createOrder(Long custKey) {
+    public ErrorInfo createOrder(Long custKey, String type) {
         ErrorInfo errorInfo = RequestUtils.getErrorInfo();
         Double price = null;
-        String type = null;
         if (errorInfo.getHttpStatusCode() == 200) {
             Order order = orderService.createOrderByCustKey(custKey);
             taskQueue.offer(order.getOrderKey());
             price = order.getTotalPrice();
-            type = order.getComment();
         }
         JSONObject data = new JSONObject();
         data.put("Action", "createOrder");

@@ -49,7 +49,7 @@ public class OrderService {
         Order order = orders.get(0);
         order.setCustKey(custKey);
         order.setTotalPrice(RequestUtils.getRandomNumber(100, 1000) * 1.0);
-        order.setComment(RequestUtils.getRandomOrderType());
+//        order.setComment(RequestUtils.getRandomOrderType());
         orderDao.insertOrders(orders);
         return order;
     }
