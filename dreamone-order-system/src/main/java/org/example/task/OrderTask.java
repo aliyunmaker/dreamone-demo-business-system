@@ -91,7 +91,7 @@ public class OrderTask {
             .register(registry);
     }
 
-    public ErrorInfo createOrder(Long custKey, String type) {
+    public ErrorInfo createOrder(Long custKey, String type, String region) {
         ErrorInfo errorInfo = RequestUtils.getErrorInfo();
         Double price = null;
         if (errorInfo.getHttpStatusCode() == 200) {
@@ -107,6 +107,7 @@ public class OrderTask {
         data.put("Message", errorInfo.getMessage());
         data.put("Price", price);
         data.put("Type", type);
+        data.put("Region", region);
         log.info(data.toString());
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s|%s|%s",
