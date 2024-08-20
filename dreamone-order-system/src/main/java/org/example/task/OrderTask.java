@@ -101,6 +101,15 @@ public class OrderTask {
             price = order.getTotalPrice();
             type = order.getComment();
         }
+        JSONObject data = new JSONObject();
+        data.put("Action", "createOrder");
+        data.put("Duration", RequestUtils.getRandomCallTime());
+        data.put("HttpStatusCode", errorInfo.getHttpStatusCode());
+        data.put("Code", errorInfo.getCode());
+        data.put("Message", errorInfo.getMessage());
+        data.put("Price", price);
+        data.put("Type", type);
+        log.info(data.toString());
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s|%s|%s",
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
