@@ -110,9 +110,9 @@ public class OrderTask {
         data.put("Region", region);
         log.info(data.toString());
         log.info(String.format(
-            "%s|%s|%s|%s|%s|%s|%s|%s",
+            "%s|%s|%s|%s|%s|%s|%s|%s|%s",
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-            "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type));
+            "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type, region));
         return errorInfo;
     }
 
