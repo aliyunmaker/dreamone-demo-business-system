@@ -26,9 +26,9 @@ public class OrderController extends BaseController {
     @Autowired
     OrderTask orderTask;
 
-    @RequestMapping("/createOrder")
+    @RequestMapping("/createOrders")
     public void createOrders(HttpServletRequest request, HttpServletResponse response) {
-        ErrorInfo errorInfo = orderTask.createOrder(Long.valueOf(request.getParameter("customerId")), request.getParameter("type"), request.getParameter("region"));
+        ErrorInfo errorInfo = orderTask.createOrders(Long.valueOf(request.getParameter("count")), request.getParameter("type"), request.getParameter("region"));
         WebResult result = new WebResult();
         result.setData(errorInfo);
         outputToJSON(response, result);

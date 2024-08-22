@@ -3,14 +3,8 @@ package org.example.task;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayDeque;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Random;
-import java.util.stream.Collectors;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -23,13 +17,10 @@ import io.micrometer.core.instrument.MeterRegistry;
 import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.ErrorInfo;
-import org.example.model.Customer;
 import org.example.model.Order;
 import org.example.service.OrderService;
 import org.example.utils.HttpClientUtils;
 import org.example.utils.RequestUtils;
-import org.example.utils.TpchDataGenerator;
-import org.slf4j.MDC;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -91,28 +82,30 @@ public class OrderTask {
             .register(registry);
     }
 
-    public ErrorInfo createOrder(Long custKey, String type, String region) {
+    public ErrorInfo createOrders(Long count, String type, String region) {
         ErrorInfo errorInfo = RequestUtils.getErrorInfo();
-        Double price = null;
+        AtomicReference<Double> price = new AtomicReference<>();
         if (errorInfo.getHttpStatusCode() == 200) {
-            Order order = orderService.createOrderByCustKey(custKey);
-            taskQueue.offer(order.getOrderKey());
-            price = order.getTotalPrice();
+            List<Order> orders = orderService.createOrders(count);
+            orders.forEach(order -> {
+                taskQueue.offer(order.getOrderKey());
+                price.set(order.getTotalPrice());
+                JSONObject data = new JSONObject();
+                data.put("Action", "createOrder");
+                data.put("Duration", RequestUtils.getRandomCallTime());
+                data.put("HttpStatusCode", errorInfo.getHttpStatusCode());
+                data.put("Code", errorInfo.getCode());
+                data.put("Message", errorInfo.getMessage());
+                data.put("Price", price);
+                data.put("Type", type);
+                data.put("Region", region);
+                log.info(data.toString());
+                log.info(String.format(
+                    "%s|%s|%s|%s|%s|%s|%s|%s|%s",
+                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                    "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type, region));
+            });
         }
-        JSONObject data = new JSONObject();
-        data.put("Action", "createOrder");
-        data.put("Duration", RequestUtils.getRandomCallTime());
-        data.put("HttpStatusCode", errorInfo.getHttpStatusCode());
-        data.put("Code", errorInfo.getCode());
-        data.put("Message", errorInfo.getMessage());
-        data.put("Price", price);
-        data.put("Type", type);
-        data.put("Region", region);
-        log.info(data.toString());
-        log.info(String.format(
-            "%s|%s|%s|%s|%s|%s|%s|%s|%s",
-            LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-            "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type, region));
         return errorInfo;
     }
 
@@ -149,10 +142,8 @@ public class OrderTask {
         requestTimeSummary.record(callTime);
         requestTimeHistogram.record(Duration.ofMillis(callTime));
 
-        Order order = orderService.createOrderByCustKey(custKey);
-
-        taskQueue.offer(order.getOrderKey());
-
+        List<Order> orders = orderService.createOrders(custKey);
+        orders.forEach(order -> taskQueue.offer(order.getOrderKey()));
     }
 
     /**

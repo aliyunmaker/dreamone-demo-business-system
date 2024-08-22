@@ -4,10 +4,8 @@ import java.util.List;
 import java.util.Random;
 
 import io.micrometer.core.instrument.Counter;
-import io.micrometer.core.instrument.Gauge;
 import io.micrometer.core.instrument.MeterRegistry;
 import lombok.extern.slf4j.Slf4j;
-import org.aspectj.weaver.ast.Or;
 import org.example.dao.OrderDao;
 import org.example.model.Order;
 import org.example.utils.RequestUtils;
@@ -37,21 +35,17 @@ public class OrderService {
             .register(registry);
     }
 
-    public void createOrders(Integer count) {
-        List<Order> orders = TpchDataGenerator.generateOrders(count);
-        orderDao.insertOrders(orders);
-        createCounter.increment();
-    }
-
-    public Order createOrderByCustKey(Long custKey) {
-        List<Order> orders = TpchDataGenerator.generateOrders(1);
+    public List<Order> createOrders(Long count) {
+        List<Order> orders = TpchDataGenerator.generateOrders(count.intValue());
         Assert.notEmpty(orders, "TpchDataGenerator.generateOrders should not return empty list.");
-        Order order = orders.get(0);
-        order.setCustKey(custKey);
-        order.setTotalPrice(RequestUtils.getRandomNumber(100, 1000) * 1.0);
+        orders.stream().forEach(order -> {
+            order.setCustKey(12345L);
+            order.setTotalPrice(RequestUtils.getRandomNumber(100, 1000) * 1.0);
+        });
 //        order.setComment(RequestUtils.getRandomOrderType());
         orderDao.insertOrders(orders);
-        return order;
+
+        return orders;
     }
     
 }
