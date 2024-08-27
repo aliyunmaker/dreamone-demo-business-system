@@ -31,7 +31,7 @@ public class OrderController extends BaseController {
     public void createOrders(HttpServletRequest request, HttpServletResponse response) {
         ErrorInfo errorInfo = orderTask.createOrders(request.getParameter("count"), request.getParameter("type"), request.getParameter("region"));
         WebResult result = new WebResult();
-        result.setData(errorInfo);
+        result.setData(JSON.toJSONString(errorInfo));
         outputToJSON(response, result);
     }
 }
