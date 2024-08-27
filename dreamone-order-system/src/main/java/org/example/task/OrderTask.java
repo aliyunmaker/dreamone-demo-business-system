@@ -82,7 +82,11 @@ public class OrderTask {
             .register(registry);
     }
 
-    public ErrorInfo createOrders(Long count, String type, String region) {
+    public ErrorInfo createOrders(String countStr, String type, String region) {
+        if (countStr == null) {
+            return ErrorInfo.INVALID_PARAMETER;
+        }
+        Long count = Long.valueOf(countStr);
         ErrorInfo errorInfo = RequestUtils.getErrorInfo();
         AtomicReference<Double> price = new AtomicReference<>();
         if (errorInfo.getHttpStatusCode() == 200) {
