@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.ErrorInfo;
 import org.example.model.WebResult;
@@ -28,6 +29,7 @@ public class OrderController extends BaseController {
 
     @RequestMapping("/createOrders")
     public void createOrders(HttpServletRequest request, HttpServletResponse response) {
+        log.info("createOrders request: {}", JSON.toJSONString(request));
         ErrorInfo errorInfo = orderTask.createOrders(Long.valueOf(request.getParameter("count")), request.getParameter("type"), request.getParameter("region"));
         WebResult result = new WebResult();
         result.setData(errorInfo);
