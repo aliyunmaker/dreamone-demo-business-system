@@ -19,7 +19,7 @@ public class TpchDataGenerator {
     public static List<Order> generateOrders(Integer count) {
         log.info("user.dir: " + System.getProperty("user.dir"));
         List<io.trino.tpch.Order> tpchOrders = new ArrayList<>();
-        OrderGenerator orderGenerator = new OrderGenerator((double)count / 30 * 0.0002, 1, 1);
+        OrderGenerator orderGenerator = new OrderGenerator((double)count / 30 * 0.00002, 1, 1);
         for (io.trino.tpch.Order value : orderGenerator) {
             tpchOrders.add(value);
             log.info("1 order created.");
