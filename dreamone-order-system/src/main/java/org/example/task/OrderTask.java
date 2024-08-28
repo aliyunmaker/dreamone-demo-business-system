@@ -83,6 +83,7 @@ public class OrderTask {
     }
 
     public ErrorInfo createOrders(String countStr, String type, String region) {
+        log.info("createOrders in OrderTask, count: " + countStr + " type: " + type + " region: " + region);
         if (countStr == null) {
             return ErrorInfo.INVALID_PARAMETER;
         }
