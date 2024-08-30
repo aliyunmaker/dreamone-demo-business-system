@@ -13,8 +13,8 @@ public enum ErrorInfo implements BaseErrorInfo{
 
     OK("OK", "Request success.", 200),
     SYSTEM_ERROR("InternalError", "A system error occurred.", 500),
-    INVALID_PARAMETER("InvalidParameter", "The specified parameter %s is not valid.", 400),
-    NO_PERMISSION("NoPermission", "You are not authorized to perform this operation. Action: %s. Resource: %s.", 403);
+    INVALID_PARAMETER("InvalidParameter", "One of parameters is not valid.", 400),
+    NO_PERMISSION("NoPermission", "You are not authorized to perform this operation.", 403);
 
     String code;
 
