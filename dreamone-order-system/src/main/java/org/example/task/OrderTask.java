@@ -84,32 +84,30 @@ public class OrderTask {
 
     public ErrorInfo createOrders(String countStr, String type, String region) {
         if (countStr == null) {
-            return ErrorInfo.INVALID_PARAMETER;
+            return ErrorInfo.NO_ADDRESS;
         }
         Long count = Long.valueOf(countStr);
-        ErrorInfo errorInfo = RequestUtils.getErrorInfo();
+        ErrorInfo errorInfo = ErrorInfo.OK;
         AtomicReference<Double> price = new AtomicReference<>();
-        if (errorInfo.getHttpStatusCode() == 200) {
-            List<Order> orders = orderService.createOrders(count);
-            orders.forEach(order -> {
-                taskQueue.offer(order.getOrderKey());
-                price.set(order.getTotalPrice());
-                JSONObject data = new JSONObject();
-                data.put("Action", "createOrder");
-                data.put("Duration", RequestUtils.getRandomCallTime());
-                data.put("HttpStatusCode", errorInfo.getHttpStatusCode());
-                data.put("Code", errorInfo.getCode());
-                data.put("Message", errorInfo.getMessage());
-                data.put("Price", price);
-                data.put("Type", type);
-                data.put("Region", region);
-                log.info(data.toString());
-                log.info(String.format(
-                    "%s|%s|%s|%s|%s|%s|%s|%s|%s",
-                    LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
-                    "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type, region));
-            });
-        }
+        List<Order> orders = orderService.createOrders(count);
+        orders.forEach(order -> {
+            taskQueue.offer(order.getOrderKey());
+            price.set(order.getTotalPrice());
+            JSONObject data = new JSONObject();
+            data.put("Action", "createOrder");
+            data.put("Duration", RequestUtils.getRandomCallTime());
+            data.put("HttpStatusCode", errorInfo.getHttpStatusCode());
+            data.put("Code", errorInfo.getCode());
+            data.put("Message", errorInfo.getMessage());
+            data.put("Price", price);
+            data.put("Type", type);
+            data.put("Region", region);
+            log.info(data.toString());
+            log.info(String.format(
+                "%s|%s|%s|%s|%s|%s|%s|%s|%s",
+                LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
+                "createOrder", RequestUtils.getRandomCallTime(), errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), price, type, region));
+        });
         return errorInfo;
     }
 
@@ -266,11 +264,11 @@ public class OrderTask {
         if (randomNumber <= 80) {
             errorInfo = ErrorInfo.OK;
         } else if (randomNumber <= 90) {
-            errorInfo = ErrorInfo.INVALID_PARAMETER;
+            errorInfo = ErrorInfo.NO_ADDRESS;
         } else if (randomNumber <= 95) {
-            errorInfo = ErrorInfo.SYSTEM_ERROR;
+            errorInfo = ErrorInfo.BUYER_TOO_MANY_UNPAID_ORDERS;
         } else {
-            errorInfo = ErrorInfo.NO_PERMISSION;
+            errorInfo = ErrorInfo.USING_PROMOTION_FAIL;
         }
         return errorInfo;
     }
