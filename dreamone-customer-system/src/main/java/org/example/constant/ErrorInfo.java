@@ -12,9 +12,9 @@ import lombok.Getter;
 public enum ErrorInfo implements BaseErrorInfo{
 
     OK("OK", "Request success.", 200),
-    SYSTEM_ERROR("InternalError", "A system error occurred.", 500),
-    INVALID_PARAMETER("InvalidParameter", "The specified parameter %s is not valid.", 400),
-    NO_PERMISSION("NoPermission", "You are not authorized to perform this operation. Action: %s. Resource: %s.", 403);
+    BUYER_TOO_MANY_UNPAID_ORDERS("BUYER_TOO_MANY_UNPAID_ORDERS", "Buyer has too many unpaid orders.", 400),
+    NO_ADDRESS("NO_ADDRESS", "Address is null.", 400),
+    USING_PROMOTION_FAIL("USING_PROMOTION_FAIL", "Using promotion failed", 400);
 
     String code;
 

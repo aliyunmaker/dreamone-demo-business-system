@@ -36,11 +36,11 @@ public class RequestUtils {
         if (randomNumber <= 80) {
             errorInfo = ErrorInfo.OK;
         } else if (randomNumber <= 90) {
-            errorInfo = ErrorInfo.INVALID_PARAMETER;
+            errorInfo = ErrorInfo.NO_ADDRESS;
         } else if (randomNumber <= 95) {
-            errorInfo = ErrorInfo.SYSTEM_ERROR;
+            errorInfo = ErrorInfo.BUYER_TOO_MANY_UNPAID_ORDERS;
         } else {
-            errorInfo = ErrorInfo.NO_PERMISSION;
+            errorInfo = ErrorInfo.USING_PROMOTION_FAIL;
         }
         return errorInfo;
     }
