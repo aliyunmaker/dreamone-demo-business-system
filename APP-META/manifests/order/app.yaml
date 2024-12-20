@@ -25,7 +25,7 @@ spec:
         env:
           - name: CUSTOMER_SYSTEM_URL
             value: "http://dreamone-customer-system.dreamone-customer-system.svc.cluster.local:80" # service
-          - name: CUSTOMER_ITEM_URL
+          - name: ITEM_SYSTEM_URL
             value: "http://dreamone-item-system.dreamone-item-system.svc.cluster.local:80" # service
           - name: CUSTOMER_SYSTEM_INGRESS_URL
             valueFrom:
