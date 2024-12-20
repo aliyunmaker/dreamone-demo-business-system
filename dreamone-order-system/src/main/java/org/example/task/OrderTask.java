@@ -147,6 +147,10 @@ public class OrderTask {
         JSONObject itemResult = getData(dreamoneItemSystemServer, itemAction, itemParams);
         log.info("item:{}", itemResult.getString("data"));
 
+        if (Integer.parseInt(data.getString("HttpStatusCode")) != 200) {
+            throw new RuntimeException("getCustomer failed");
+        }
+
         requestCounter.increment();
         requestTimeSummary.record(callTime);
         requestTimeHistogram.record(Duration.ofMillis(callTime));

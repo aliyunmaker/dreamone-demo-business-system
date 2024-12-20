@@ -30,15 +30,20 @@ public class RequestUtils {
         }
     }
 
-    public static ErrorInfo getErrorInfo() {
+    public static ErrorInfo getErrorInfo(String status) {
         ErrorInfo errorInfo;
-        int randomNumber = getRandomNumber(1, 100);
-        if (randomNumber <= 80) {
+//        int randomNumber = getRandomNumber(1, 100);
+//        if (randomNumber <= 80) {
+//            errorInfo = ErrorInfo.OK;
+//        } else if (randomNumber <= 90) {
+//            errorInfo = ErrorInfo.NO_ADDRESS;
+//        } else if (randomNumber <= 95) {
+//            errorInfo = ErrorInfo.BUYER_TOO_MANY_UNPAID_ORDERS;
+//        } else {
+//            errorInfo = ErrorInfo.USING_PROMOTION_FAIL;
+//        }
+        if ("OK".equals(status)) {
             errorInfo = ErrorInfo.OK;
-        } else if (randomNumber <= 90) {
-            errorInfo = ErrorInfo.NO_ADDRESS;
-        } else if (randomNumber <= 95) {
-            errorInfo = ErrorInfo.BUYER_TOO_MANY_UNPAID_ORDERS;
         } else {
             errorInfo = ErrorInfo.USING_PROMOTION_FAIL;
         }

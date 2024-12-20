@@ -7,11 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.alibaba.fastjson.JSONObject;
-
 import io.micrometer.core.annotation.Timed;
-import io.micrometer.core.instrument.Metrics;
-import io.micrometer.core.instrument.Timer;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.ErrorInfo;
 import org.example.model.Customer;
@@ -32,6 +28,23 @@ public class CustomerController extends BaseController {
 
     @Autowired
     CustomerService customerService;
+
+    private Boolean simulateError = false;
+
+    @RequestMapping("/getSimulateErrorStatus")
+    public void getSimulateErrorStatus(HttpServletRequest request, HttpServletResponse response) {
+        WebResult result = new WebResult();
+        result.setData(simulateError);
+        outputToJSON(response, result);
+    }
+
+    @RequestMapping("/simulateError")
+    public void simulateError(HttpServletRequest request, HttpServletResponse response) {
+        simulateError = !simulateError;
+        WebResult result = new WebResult();
+        result.setData("Simulated error: " + simulateError);
+        outputToJSON(response, result);
+    }
 
     @RequestMapping("/listCustomers")
     public void listCustomers(HttpServletRequest request, HttpServletResponse response) {
@@ -84,25 +97,26 @@ public class CustomerController extends BaseController {
 
     @RequestMapping("/getCustomer")
     public void getCustomer(HttpServletRequest request, HttpServletResponse response) {
-        if (RequestUtils.getRandomNumber(1, 100) < 3) {
-            throw new RuntimeException();
-        }
-
-        Long custKey = Long.valueOf(request.getParameter("custKey"));
-
-        /* 打印模拟错误码日志 */
         int callTime = RequestUtils.getRandomCallTime();
-        ErrorInfo errorInfo = RequestUtils.getErrorInfo();
+        ErrorInfo errorInfo;
         String responseInfo;
-        if (errorInfo.getHttpStatusCode() == 200) {
+        try {
+            if (simulateError) {
+                // 模拟故障
+                throw new RuntimeException();
+            }
+            Long custKey = Long.valueOf(request.getParameter("custKey"));
             Customer customer = customerService.getCustomer(custKey);
-             responseInfo = String.format(
+            errorInfo = RequestUtils.getErrorInfo("OK");
+            responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\", \"Customer\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), customer);
-        } else {
+        } catch (Exception e) {
+            errorInfo = RequestUtils.getErrorInfo("Error");
             responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage());
+            log.error("getCustomer error", e);
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",
