@@ -77,7 +77,7 @@ public class CustomerController extends BaseController {
     public void listAllCustomers(HttpServletRequest request, HttpServletResponse response) {
         /* 打印模拟错误码日志 */
         int callTime = RequestUtils.getRandomCallTime();
-        ErrorInfo errorInfo = RequestUtils.getErrorInfo();
+        ErrorInfo errorInfo = RequestUtils.getErrorInfo("OK");
         String responseInfo;
         if (errorInfo.getHttpStatusCode() == 200) {
             customerService.listAllCustomers();
