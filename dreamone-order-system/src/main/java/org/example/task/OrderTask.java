@@ -37,6 +37,9 @@ public class OrderTask {
     @Value("${dreamone.customer.server}")
     String dreamoneCustomerSystemServer;
 
+    @Value("${dreamone.item.server}")
+    String dreamoneItemSystemServer;
+
     @Value("${dreamone.customer.ingress}")
     String dreamoneCustomerSystemIngress;
 
@@ -112,7 +115,7 @@ public class OrderTask {
     }
 
     /**
-     * 生成订单，发起getCustomer请求
+     * 生成订单，发起getCustomer和getItem请求
      */
     @Scheduled(fixedDelay = 5000)
     void scheduleCreateOrder() {
@@ -124,11 +127,7 @@ public class OrderTask {
         Long custKey = Integer.toUnsignedLong(getRandomNumber(1, 100));
         Map<String, String> params = new HashMap<>();
         params.put("custKey", custKey.toString());
-        JSONObject result = JSON.parseObject(HttpClientUtils.postUrlAndFormBody(dreamoneCustomerSystemServer + "/" + action, params));
-
-        log.info("CreateOrderTask result from customer system: " + result);
-
-        JSONObject data = JSON.parseObject(result.getString("data"));
+        JSONObject data = getData(dreamoneCustomerSystemServer, action, params);
 
         /* 打印响应日志 */
         int callTime = Integer.parseInt(data.getString("Duration"));
@@ -140,12 +139,27 @@ public class OrderTask {
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             action, callTime, Integer.parseInt(data.getString("HttpStatusCode")), data.getString("Code"), data.getString("Message")));
 
+        String itemAction = "getItem";
+        String itemId = "itemId";
+        Map<String, String> itemParams = new HashMap<>();
+        params.put("itemId", itemId);
+        JSONObject itemData = getData(dreamoneItemSystemServer, itemAction, itemParams);
+        log.info(itemData.toString());
+
         requestCounter.increment();
         requestTimeSummary.record(callTime);
         requestTimeHistogram.record(Duration.ofMillis(callTime));
 
         List<Order> orders = orderService.createOrders(custKey);
         orders.forEach(order -> taskQueue.offer(order.getOrderKey()));
+    }
+
+    private JSONObject getData(String url, String action, Map<String, String> params) {
+        JSONObject result = JSON.parseObject(HttpClientUtils.postUrlAndFormBody(url + "/" + action, params));
+
+        log.info("CreateOrderTask result from " + action + ": " + result);
+
+        return JSON.parseObject(result.getString("data"));
     }
 
     /**
