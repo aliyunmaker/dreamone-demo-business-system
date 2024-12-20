@@ -19,6 +19,7 @@
     <modules>
         <module>dreamone-customer-system</module>
         <module>dreamone-order-system</module>
+        <module>dreamone-item-system</module>
     </modules>
 
     <properties>
