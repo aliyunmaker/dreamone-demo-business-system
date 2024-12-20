@@ -127,7 +127,8 @@ public class OrderTask {
         Long custKey = Integer.toUnsignedLong(getRandomNumber(1, 100));
         Map<String, String> params = new HashMap<>();
         params.put("custKey", custKey.toString());
-        JSONObject data = getData(dreamoneCustomerSystemServer, action, params);
+        JSONObject result = getData(dreamoneCustomerSystemServer, action, params);
+        JSONObject data = JSON.parseObject(result.getString("data"));
 
         /* 打印响应日志 */
         int callTime = Integer.parseInt(data.getString("Duration"));
@@ -143,8 +144,8 @@ public class OrderTask {
         String itemId = "itemId";
         Map<String, String> itemParams = new HashMap<>();
         params.put("itemId", itemId);
-        JSONObject itemData = getData(dreamoneItemSystemServer, itemAction, itemParams);
-        log.info(itemData.toString());
+        JSONObject itemResult = getData(dreamoneItemSystemServer, itemAction, itemParams);
+        log.info("item:{}", itemResult.getString("data"));
 
         requestCounter.increment();
         requestTimeSummary.record(callTime);
@@ -159,7 +160,7 @@ public class OrderTask {
 
         log.info("CreateOrderTask result from " + action + ": " + result);
 
-        return JSON.parseObject(result.getString("data"));
+        return result;
     }
 
     /**
