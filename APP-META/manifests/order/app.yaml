@@ -53,3 +53,13 @@ spec:
               secretKeyRef:
                 key: DREAMONE_LOGIN_USER
                 name: dreamone-business-system-credentials
+          - name: OTEL_TRACES_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                key: OTEL_TRACES_ENDPOINT
+                name: dreamone-business-system-credentials
+          - name: OTEL_METRICS_ENDPOINT
+            valueFrom:
+              secretKeyRef:
+                key: OTEL_METRICS_ENDPOINT
+                name: dreamone-business-system-credentials

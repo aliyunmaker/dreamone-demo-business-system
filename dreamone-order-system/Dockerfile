@@ -6,13 +6,10 @@ COPY opentelemetry-javaagent.jar /root/opentelemetry-javaagent.jar
 # 复制应用jar包
 COPY target/dreamone-order-system.jar /root/dreamone-order-system.jar
 
-# 设置环境变量（你需要替换实际的endpoint地址）
-ENV OTEL_TRACES_ENDPOINT="http://your-traces-endpoint:4317"
-ENV OTEL_METRICS_ENDPOINT="http://your-metrics-endpoint:4317"
-
 # 启动命令
 ENTRYPOINT ["java", \
     "-javaagent:/root/opentelemetry-javaagent.jar", \
+    "-Dotel.resource.attributes=service.name=dreamone-order-system,service.version=v1.0.0,deployment.environment=prod", \
     "-Dotel.exporter.otlp.protocol=http/protobuf", \
     "-Dotel.exporter.otlp.traces.endpoint=${OTEL_TRACES_ENDPOINT}", \
     "-Dotel.exporter.otlp.metrics.endpoint=${OTEL_METRICS_ENDPOINT}", \
