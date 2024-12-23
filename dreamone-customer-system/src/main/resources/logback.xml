@@ -2,7 +2,7 @@
 <configuration>
     <include resource="org/springframework/boot/logging/logback/defaults.xml" />
 
-    <property name="APP_NAME" value="dreamone-business-system" />
+    <property name="APP_NAME" value="dreamone-customer-system" />
     <property name="LOG_PATH" value="${user.home}/${APP_NAME}/logs" />
     <property name="INFO_LOG_FILE" value="${LOG_PATH}/application-info.log" />
     <property name="WARN_LOG_FILE" value="${LOG_PATH}/application-warn.log" />
