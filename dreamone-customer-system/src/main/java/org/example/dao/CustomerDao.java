@@ -15,6 +15,7 @@ public interface CustomerDao {
     List<Customer> listCustomers();
 
     List<Customer> listAllCustomers();
+
     void insertCustomers(List<Customer> customers);
 
     Customer getCustomer(Long custKey);
