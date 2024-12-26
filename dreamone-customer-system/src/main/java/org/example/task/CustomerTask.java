@@ -36,6 +36,7 @@ public class CustomerTask {
     void generateBigBatchCustomers() {
         try {
             customerService.createCustomers(5);
+            log.info("Scheduled task: generateBigBatchCustomers success");
         } catch (Exception e) {
             log.error("Scheduled task: generateBigBatchCustomers failed", e);
         }

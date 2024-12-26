@@ -35,6 +35,7 @@ public class CustomerController extends BaseController {
     public void getSimulateErrorStatus(HttpServletRequest request, HttpServletResponse response) {
         WebResult result = new WebResult();
         result.setData(simulateError);
+        log.info("getSimulateErrorStatus: " + simulateError);
         outputToJSON(response, result);
     }
 
@@ -43,6 +44,7 @@ public class CustomerController extends BaseController {
         simulateError = !simulateError;
         WebResult result = new WebResult();
         result.setData("Simulated error: " + simulateError);
+        log.info("simulateError: " + simulateError);
         outputToJSON(response, result);
     }
 
@@ -111,12 +113,13 @@ public class CustomerController extends BaseController {
             responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\", \"Customer\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), customer);
+            log.info("responseInfo: {}", responseInfo);
         } catch (Exception e) {
             errorInfo = RequestUtils.getErrorInfo("Error");
             responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage());
-            log.error("getCustomer error", e);
+            log.error("getCustomer error, responseInfo: {}", responseInfo, e);
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",
