@@ -75,17 +75,8 @@ public class OrderTask {
             .description("Statistics of request time")
             .publishPercentiles(0.5, 0.95, 0.99)
             .publishPercentileHistogram()
-            .minimumExpectedValue(Duration.ofMillis(50))
+            .minimumExpectedValue(Duration.ofMillis(1))
             .maximumExpectedValue(Duration.ofMillis(1000))
-            .sla(
-                Duration.ofMillis(50),
-                Duration.ofMillis(100),
-                Duration.ofMillis(200),
-                Duration.ofMillis(300),
-                Duration.ofMillis(500),
-                Duration.ofMillis(750),
-                Duration.ofMillis(1000)
-            )
             .register(registry);
 
         requestTimeSummary = DistributionSummary.builder("request_time_summary")
