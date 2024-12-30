@@ -15,12 +15,9 @@ import org.springframework.stereotype.Component;
 public class ExceptionTask {
 
     @Scheduled(fixedDelay = 600000)
-    void scheduleThrowException() {
-        if (new Random().nextBoolean()) {
-            return;
-        }
+    public void throwSimulatedException() {
         try {
-            throw new RuntimeException();
+            throw new RuntimeException("Simulated Error");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             throw e;
