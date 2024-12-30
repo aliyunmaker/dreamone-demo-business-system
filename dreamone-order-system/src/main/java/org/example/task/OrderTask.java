@@ -84,6 +84,13 @@ public class OrderTask {
                 Duration.ofMillis(500),
                 Duration.ofSeconds(1)
             )
+            .sla(
+                Duration.ofMillis(50),
+                Duration.ofMillis(100),
+                Duration.ofMillis(200),
+                Duration.ofMillis(500),
+                Duration.ofSeconds(1)
+            )
             .register(registry);
 
         requestTimeSummary = DistributionSummary.builder("request_time_summary")
