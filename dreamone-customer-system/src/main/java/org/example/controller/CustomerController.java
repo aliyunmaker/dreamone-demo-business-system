@@ -13,6 +13,7 @@ import org.example.constant.ErrorInfo;
 import org.example.model.Customer;
 import org.example.model.WebResult;
 import org.example.service.CustomerService;
+import org.example.task.ExceptionTask;
 import org.example.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class CustomerController extends BaseController {
 
     @Autowired
     CustomerService customerService;
+
+    @Autowired
+    ExceptionTask exceptionTask;
 
     private Boolean simulateError = false;
 
@@ -106,7 +110,7 @@ public class CustomerController extends BaseController {
         try {
             if (simulateError) {
                 // 模拟故障
-                throwSimulatedException("Simulated Error");
+                exceptionTask.throwSimulatedException("Simulated Error");
             }
             Long custKey = Long.valueOf(request.getParameter("custKey"));
             Customer customer = customerService.getCustomer(custKey);
@@ -130,9 +134,5 @@ public class CustomerController extends BaseController {
             "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage()));
         result.setData(responseInfo);
         outputToJSON(response, result);
-    }
-
-    private static void throwSimulatedException(String msg) {
-        throw new RuntimeException(msg);
     }
 }
