@@ -117,7 +117,7 @@ public class OrderTask {
     /**
      * 生成订单，发起getCustomer和getItem请求
      */
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 3000)
     void scheduleCreateOrder() {
         // 随机执行
         if (getRandomBoolean()) {

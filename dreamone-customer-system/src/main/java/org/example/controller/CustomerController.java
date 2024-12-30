@@ -102,6 +102,7 @@ public class CustomerController extends BaseController {
         int callTime = RequestUtils.getRandomCallTime();
         ErrorInfo errorInfo;
         String responseInfo;
+        WebResult result = new WebResult();
         try {
             if (simulateError) {
                 // 模拟故障
@@ -114,18 +115,19 @@ public class CustomerController extends BaseController {
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\", \"Customer\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), customer);
             log.info("responseInfo: {}", responseInfo);
+            result.setSuccess(true);
         } catch (Exception e) {
             errorInfo = RequestUtils.getErrorInfo("Error");
             responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\"}",
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage());
             log.error("getCustomer error, responseInfo: {}", responseInfo, e);
+            result.setSuccess(false);
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")),
             "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage()));
-        WebResult result = new WebResult();
         result.setData(responseInfo);
         outputToJSON(response, result);
     }
