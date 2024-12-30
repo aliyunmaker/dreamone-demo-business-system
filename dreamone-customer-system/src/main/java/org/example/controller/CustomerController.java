@@ -110,7 +110,7 @@ public class CustomerController extends BaseController {
         try {
             if (simulateError) {
                 // 模拟故障
-                exceptionTask.throwSimulatedException("Simulated Error");
+                throwSimulatedException("Simulated Error");
             }
             Long custKey = Long.valueOf(request.getParameter("custKey"));
             Customer customer = customerService.getCustomer(custKey);
@@ -134,5 +134,10 @@ public class CustomerController extends BaseController {
             "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage()));
         result.setData(responseInfo);
         outputToJSON(response, result);
+    }
+
+    @RequestMapping("/throwSimulatedException")
+    public void throwSimulatedException(String msg) {
+        throw new RuntimeException(msg);
     }
 }

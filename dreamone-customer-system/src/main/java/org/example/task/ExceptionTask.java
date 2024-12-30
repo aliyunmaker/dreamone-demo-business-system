@@ -26,8 +26,4 @@ public class ExceptionTask {
             throw e;
         }
     }
-
-    public void throwSimulatedException(String msg) {
-        throw new RuntimeException(msg);
-    }
 }
