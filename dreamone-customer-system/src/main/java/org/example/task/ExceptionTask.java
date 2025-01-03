@@ -2,6 +2,8 @@ package org.example.task;
 
 import java.util.Random;
 
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -22,6 +24,8 @@ public class ExceptionTask {
             throw new RuntimeException("Simulated Error");
         } catch (Exception e) {
             log.error(e.getMessage(), e);
+            Span.current().setStatus(StatusCode.ERROR, e.getMessage());
+            Span.current().recordException(e);
             throw e;
         }
     }
