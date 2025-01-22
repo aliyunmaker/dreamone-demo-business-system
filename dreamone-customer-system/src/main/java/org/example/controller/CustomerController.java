@@ -107,6 +107,7 @@ public class CustomerController extends BaseController {
     @WithSpan
     @RequestMapping("/getCustomer")
     public void getCustomer(HttpServletRequest request, HttpServletResponse response) {
+        Span span = Span.current();
         int callTime = RequestUtils.getRandomCallTime();
         ErrorInfo errorInfo;
         String responseInfo;
@@ -124,6 +125,7 @@ public class CustomerController extends BaseController {
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage(), customer);
             log.info("responseInfo: {}", responseInfo);
             result.setSuccess(true);
+            span.setStatus(StatusCode.OK);
         } catch (Exception e) {
             errorInfo = RequestUtils.getErrorInfo("Error");
             responseInfo = String.format(
@@ -131,8 +133,8 @@ public class CustomerController extends BaseController {
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage());
             log.error("getCustomer error, responseInfo: {}", responseInfo, e);
             result.setSuccess(false);
-            Span.current().setStatus(StatusCode.ERROR, e.getMessage());
-            Span.current().recordException(e);
+            span.setStatus(StatusCode.ERROR, e.getMessage());
+            span.recordException(e);
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",
