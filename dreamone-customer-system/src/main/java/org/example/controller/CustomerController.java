@@ -8,6 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import io.micrometer.core.annotation.Timed;
+import io.opentelemetry.api.trace.Span;
+import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.ErrorInfo;
 import org.example.model.Customer;
@@ -101,6 +104,7 @@ public class CustomerController extends BaseController {
         outputToJSON(response, result);
     }
 
+    @WithSpan
     @RequestMapping("/getCustomer")
     public void getCustomer(HttpServletRequest request, HttpServletResponse response) {
         int callTime = RequestUtils.getRandomCallTime();
@@ -127,6 +131,8 @@ public class CustomerController extends BaseController {
                 "getCustomer", callTime, errorInfo.getHttpStatusCode(), errorInfo.getCode(), errorInfo.getMessage());
             log.error("getCustomer error, responseInfo: {}", responseInfo, e);
             result.setSuccess(false);
+            Span.current().setStatus(StatusCode.ERROR, e.getMessage());
+            Span.current().recordException(e);
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",

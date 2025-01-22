@@ -20,13 +20,6 @@ public class ExceptionTask {
     @WithSpan
     @Scheduled(fixedDelay = 600000)
     public void throwSimulatedException() {
-        try {
-            throw new RuntimeException("Simulated Error");
-        } catch (Exception e) {
-            log.error(e.getMessage(), e);
-            Span.current().setStatus(StatusCode.ERROR, e.getMessage());
-            Span.current().recordException(e);
-            throw e;
-        }
+        throw new RuntimeException("Simulated Error");
     }
 }
