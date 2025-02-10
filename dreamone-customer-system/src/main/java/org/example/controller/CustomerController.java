@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import io.micrometer.core.annotation.Timed;
 import io.opentelemetry.api.trace.Span;
 import io.opentelemetry.api.trace.StatusCode;
+import io.opentelemetry.context.Scope;
 import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.example.constant.ErrorInfo;
@@ -111,7 +112,7 @@ public class CustomerController extends BaseController {
         ErrorInfo errorInfo;
         String responseInfo;
         WebResult result = new WebResult();
-        try {
+        try (Scope scope = span.makeCurrent()) {
             if (simulateError) {
                 // 模拟故障
                 exceptionTask.throwSimulatedException();
@@ -135,6 +136,8 @@ public class CustomerController extends BaseController {
             result.setSuccess(false);
             span.setStatus(StatusCode.ERROR, e.getMessage());
             span.recordException(e);
+        } finally {
+            span.end();
         }
         log.info(String.format(
             "%s|%s|%s|%s|%s|%s",
