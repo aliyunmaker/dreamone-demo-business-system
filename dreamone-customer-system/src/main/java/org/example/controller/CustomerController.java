@@ -104,7 +104,6 @@ public class CustomerController extends BaseController {
         outputToJSON(response, result);
     }
 
-    @WithSpan
     @RequestMapping("/getCustomer")
     public void getCustomer(HttpServletRequest request, HttpServletResponse response) {
         Span span = Span.current();
