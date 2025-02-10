@@ -127,6 +127,7 @@ public class CustomerController extends BaseController {
             result.setSuccess(true);
             span.setStatus(StatusCode.OK);
         } catch (Exception e) {
+            log.info("spanId: {}, traceId: {}", span.getSpanContext().getSpanId(), span.getSpanContext().getTraceId());
             errorInfo = RequestUtils.getErrorInfo("Error");
             responseInfo = String.format(
                 "{\"Action\":\"%s\", \"Duration\": \"%s\", \"HttpStatusCode\":\"%s\",\"Code\":\"%s\",\"Message\":\"%s\"}",
