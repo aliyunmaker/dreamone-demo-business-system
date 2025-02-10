@@ -134,9 +134,9 @@ public class OrderTask {
     @Scheduled(fixedDelay = 3000)
     void scheduleCreateOrder() {
         // 随机执行
-        if (getRandomBoolean()) {
-            return;
-        }
+        //if (getRandomBoolean()) {
+        //    return;
+        //}
         String action = "getCustomer";
         Long custKey = Integer.toUnsignedLong(getRandomNumber(1, 100));
         Map<String, String> params = new HashMap<>();
