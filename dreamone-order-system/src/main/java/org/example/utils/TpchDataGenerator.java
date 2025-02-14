@@ -26,6 +26,7 @@ public class TpchDataGenerator {
         }
         return tpchOrders.stream()
             .map(tpchOrder -> Order.builder()
+                .orderKey(tpchOrder.getOrderKey())
                 .rowNumber(tpchOrder.getRowNumber())
                 .custKey(tpchOrder.getCustomerKey())
                 .orderStatus(String.valueOf(tpchOrder.getOrderStatus()))
