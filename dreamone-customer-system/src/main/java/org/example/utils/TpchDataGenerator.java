@@ -23,15 +23,17 @@ public class TpchDataGenerator {
             log.info("1 customer created.");
         }
         return tpchCustomers.stream()
-            .map(tpchCustomer -> Customer.builder()
-                .name(tpchCustomer.getName())
-                .phone(tpchCustomer.getPhone())
-                .nationKey(tpchCustomer.getNationKey())
-                .acctBal(tpchCustomer.getAccountBalance())
-                .address(tpchCustomer.getAddress())
-                .mktSegment(tpchCustomer.getMarketSegment())
-                .comment(tpchCustomer.getComment())
-                .build())
+            .map(tpchCustomer -> {
+                Customer customer = new Customer();
+                customer.setName(tpchCustomer.getName());
+                customer.setPhone(tpchCustomer.getPhone());
+                customer.setNationKey(tpchCustomer.getNationKey());
+                customer.setAcctBal(tpchCustomer.getAccountBalance());
+                customer.setAddress(tpchCustomer.getAddress());
+                customer.setMktSegment(tpchCustomer.getMarketSegment());
+                customer.setComment(tpchCustomer.getComment());
+                return customer;
+            })
             .collect(Collectors.toList());
     }
 
