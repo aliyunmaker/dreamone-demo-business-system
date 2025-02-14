@@ -43,7 +43,7 @@ public class OrderService {
             order.setTotalPrice(RequestUtils.getRandomNumber(100, 1000) * 1.0);
         });
 //        order.setComment(RequestUtils.getRandomOrderType());
-        orderDao.insertOrders(orders);
+//        orderDao.insertOrders(orders);
 
         return orders;
     }

@@ -10,7 +10,6 @@ import lombok.Data;
  * @date 2024/1/2
  */
 @Data
-@Builder
 public class Customer {
     private Long custKey;
     private String name;

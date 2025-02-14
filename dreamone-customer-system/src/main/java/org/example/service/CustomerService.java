@@ -35,6 +35,7 @@ public class CustomerService {
     }
 
     public Customer getCustomer(Long custKey) {
-        return customerDao.getCustomer(custKey);
+        //return customerDao.getCustomer(custKey);
+        return new Customer();
     }
 }
