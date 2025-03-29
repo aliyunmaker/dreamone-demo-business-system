@@ -53,13 +53,13 @@ spec:
               secretKeyRef:
                 key: OTEL_METRICS_ENDPOINT
                 name: dreamone-business-system-credentials
-          - name: DREAMONE_ARMS_PID
+          - name: DREAMONE_ARMS_RETCODE_PID
             valueFrom:
               secretKeyRef:
-                key: DREAMONE_ARMS_PID
+                key: DREAMONE_ARMS_RETCODE_PID
                 name: dreamone-business-system-credentials
-          - name: DREAMONE_ARMS_ID
+          - name: DREAMONE_ARMS_RUM_PID
             valueFrom:
               secretKeyRef:
-                key: DREAMONE_ARMS_ID
+                key: DREAMONE_ARMS_RUM_PID
                 name: dreamone-business-system-credentials

@@ -42,7 +42,7 @@
     !(function (c, b, d, a) {
       c[a] || (c[a] = {}); c[a].config =
       {
-        pid: /*[[${armsPid}]]*/ '',
+        pid: /*[[${armsRetcodePid}]]*/ '',
         appType: "web",
         imgUrl: "https://arms-retcode.aliyuncs.com/r.png?",
         sendResource: true,
@@ -55,12 +55,14 @@
   </script>
   <script th:inline="javascript">
     !(function (c, b, d, a) {
+      var pid = /*[[${armsRumPid}]]*/ '';
+      d="https://" + pid.split('@')[0] + "-sdk.rum.aliyuncs.com/v2/browser-sdk.js";
       c[a] || (c[a] = {}); c[a] = {
-        "pid": /*[[${armsPid}]]*/ '',
-        "endpoint": "https://" + [[${armsId}]] + "-default-cn.rum.aliyuncs.com"
+        "pid": pid,
+        "endpoint": "https://" + pid.split('@')[0] + "-default-cn.rum.aliyuncs.com"
       };
       with (b) with (body) with (insertBefore(createElement("script"), firstChild)) setAttribute("crossorigin", "", src = d)
-    })(window, document, "https://" + [[${armsId}]] + "-sdk.rum.aliyuncs.com/v2/browser-sdk.js", "__rum");
+    })(window, document, '', "__rum");
   </script>
   <main>
     <button id="query-btn" class="btn btn-outline-secondary" type="button" onclick="queryData()">

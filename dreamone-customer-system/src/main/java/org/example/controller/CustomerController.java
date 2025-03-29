@@ -40,18 +40,18 @@ public class CustomerController extends BaseController {
     @Autowired
     ExceptionTask exceptionTask;
 
-    @Value("${dreamone.arms.pid}")
-    private String armsPid;
+    @Value("${dreamone.arms.retcode.pid}")
+    private String armsRetcodePid;
 
-    @Value("${dreamone.arms.id}")
-    private String armsId;
+    @Value("${dreamone.arms.rum.pid}")
+    private String armsRumPid;
 
     private Boolean simulateError = false;
 
     @GetMapping("/customer")
     public String customer(Model model) {
-        model.addAttribute("armsPid", armsPid);
-        model.addAttribute("armsId", armsId);
+        model.addAttribute("armsRetcodePid", armsRetcodePid);
+        model.addAttribute("armsRumPid", armsRumPid);
         return "customer";
     }
 
