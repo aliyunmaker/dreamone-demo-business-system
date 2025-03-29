@@ -2,53 +2,76 @@
 <html lang="en" data-bs-theme="auto">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/bootstrap_v5_3.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/a/font_4151968_zm3z1ijgrfb.css" />
-    <link href="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/markdown_rendering.css" rel="stylesheet">
-    <!--md格式内容转换-->
-    <script type="text/javascript" src="customer.js"></script>
-    <style>
-        .iframe-container {
-          width: 100%;
-          height: 100vh;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/bootstrap_v5_3.min.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" href="https://at.alicdn.com/t/a/font_4151968_zm3z1ijgrfb.css" />
+  <link href="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/markdown_rendering.css" rel="stylesheet">
+  <!--md格式内容转换-->
+  <style>
+    .iframe-container {
+      width: 100%;
+      height: 100vh;
+    }
 
-        .nav-link:hover {
-          background-color: #a5b6c6;
-        }
+    .nav-link:hover {
+      background-color: #a5b6c6;
+    }
 
-        .active {
-          background-color: #8899f0;
-        }
+    .active {
+      background-color: #8899f0;
+    }
 
-        #offcanvas-btn {
-          position: fixed; bottom: 20px; right: 20px;
-        }
+    #offcanvas-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+    }
 
-        #offcanvasNavbar .offcanvas-body {
-            padding-top: 0;
-        }
-    </style>
-    <script src="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/bootstrap_v5_3.bundle.min.js"></script>
-    <script type="text/javascript" src="//dream-web.oss-cn-hangzhou.aliyuncs.com/static/jslib/jquery.min.js"></script>
-    <script type="text/javascript" src="customer.js"></script>
+    #offcanvasNavbar .offcanvas-body {
+      padding-top: 0;
+    }
+  </style>
+  <script src="https://dream-web.oss-cn-hangzhou.aliyuncs.com/static/css/bootstrap_v5_3.bundle.min.js"></script>
+  <script type="text/javascript" src="//dream-web.oss-cn-hangzhou.aliyuncs.com/static/jslib/jquery.min.js"></script>
+  <script type="text/javascript" src="customer.js"></script>
 </head>
 
 <body>
-<main>
-    <button id="query-btn" class="btn btn-outline-secondary" type="button"
-            onclick="queryData()">
-        List Customers
+  <script th:inline="javascript">
+    !(function (c, b, d, a) {
+      c[a] || (c[a] = {}); c[a].config =
+      {
+        pid: /*[[${armsPid}]]*/ '',
+        appType: "web",
+        imgUrl: "https://arms-retcode.aliyuncs.com/r.png?",
+        sendResource: true,
+        enableLinkTrace: true,
+        behavior: true,
+        useFmp: true
+      };
+      with (b) with (body) with (insertBefore(createElement("script"), firstChild)) setAttribute("crossorigin", "", src = d)
+    })(window, document, "https://sdk.rum.aliyuncs.com/v1/bl.js", "__bl");
+  </script>
+  <script th:inline="javascript">
+    !(function (c, b, d, a) {
+      c[a] || (c[a] = {}); c[a] = {
+        "pid": /*[[${armsPid}]]*/ '',
+        "endpoint": "https://" + [[${armsId}]] + "-default-cn.rum.aliyuncs.com"
+      };
+      with (b) with (body) with (insertBefore(createElement("script"), firstChild)) setAttribute("crossorigin", "", src = d)
+    })(window, document, "https://" + [[${armsId}]] + "-sdk.rum.aliyuncs.com/v2/browser-sdk.js", "__rum");
+  </script>
+  <main>
+    <button id="query-btn" class="btn btn-outline-secondary" type="button" onclick="queryData()">
+      List Customers
     </button>
     <!-- <button id="create-btn" class="btn btn-outline-secondary" type="button"
             onclick="createData()">
         Create Customers
     </button> -->
-    <button id="query-all-btn" class="btn btn-outline-secondary" type="button"
-            onclick="queryAllData()">
-        Query All Customers
+    <button id="query-all-btn" class="btn btn-outline-secondary" type="button" onclick="queryAllData()">
+      Query All Customers
     </button>
 
     <div class="px-5 py-3" id="customerPage">
@@ -68,7 +91,7 @@
         </div>
       </div>
     </div>
-</main>
+  </main>
 </body>
 
 </html>

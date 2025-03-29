@@ -20,7 +20,9 @@ import org.example.service.CustomerService;
 import org.example.task.ExceptionTask;
 import org.example.utils.RequestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -38,10 +40,18 @@ public class CustomerController extends BaseController {
     @Autowired
     ExceptionTask exceptionTask;
 
+    @Value("${dreamone.arms.pid}")
+    private String armsPid;
+
+    @Value("${dreamone.arms.id}")
+    private String armsId;
+
     private Boolean simulateError = false;
 
     @GetMapping("/customer")
-    public String customer() {
+    public String customer(Model model) {
+        model.addAttribute("armsPid", armsPid);
+        model.addAttribute("armsId", armsId);
         return "customer";
     }
 
