@@ -3,7 +3,7 @@ var customers;
 function queryData() {
     $("#customerPage").empty();
     $.ajax({
-        url: "../" + "customer/listCustomers",
+        url: "/listCustomers",
         type: "POST",
         data: {},
         success: function (result) {
@@ -21,7 +21,7 @@ function queryData() {
 
 function createData() {
     $.ajax({
-        url: "../" + "customer/createCustomers",
+        url: "/createCustomers",
         type: "POST",
         data: {},
         success: function (result) {
@@ -42,7 +42,7 @@ function createData() {
 function queryAllData() {
     $("#customerPage").empty();
     $.ajax({
-        url: "../" + "customer/listAllCustomers",
+        url: "/listAllCustomers",
         type: "POST",
         data: {},
         success: function (result) {
