@@ -25,4 +25,4 @@ spec:
           service:
             name: dreamone-customer-system
             port:
-              number: 8080
+              number: 80
