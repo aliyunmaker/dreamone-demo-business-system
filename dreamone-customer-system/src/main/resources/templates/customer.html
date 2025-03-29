@@ -59,7 +59,8 @@
       d="https://" + pid.split('@')[0] + "-sdk.rum.aliyuncs.com/v2/browser-sdk.js";
       c[a] || (c[a] = {}); c[a] = {
         "pid": pid,
-        "endpoint": "https://" + pid.split('@')[0] + "-default-cn.rum.aliyuncs.com"
+        "endpoint": "https://" + pid.split('@')[0] + "-default-cn.rum.aliyuncs.com",
+        tracing: true
       };
       with (b) with (body) with (insertBefore(createElement("script"), firstChild)) setAttribute("crossorigin", "", src = d)
     })(window, document, '', "__rum");
